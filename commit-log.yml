@@ -6,7 +6,9 @@ image_resource:
     repository: getourneau/alpine-bash-git
 inputs:
   - name: hello
-outputs:
+  - name: result
   - name: out
+outputs:
+  - name: updated-result
 run:
-  path: ./hello/hello.sh
+  path: ./hello/commit-log.sh

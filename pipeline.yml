@@ -1,0 +1,30 @@
+---
+# Resourceの定義
+resources:
+# Git Resourceの定義
+- name: hello
+  type: git
+  source:
+    uri: https://github.com/kanak0304/hello-concourse.git
+- name: result
+  type: git
+  source: 
+    uri: git@gist.github.com:d069fc1d3a9a1dac2d9fb72ee43880ca.git
+    private_key: {{github-private-key}}
+    branch: master
+
+# Jobの定義
+jobs:
+- name: hello-job
+  public: true # UI上でJobの結果をログイン不要で公開するかどうか
+  plan:
+  - get: hello
+    trigger: true # Resourceに変更があれば自動でジョブを実行するかどうか
+  - get: result
+  - task: run-hello
+    file: hello/hello3.yml
+  - task: commit-log
+    file: hello/commit-log.yml
+  - put:  result
+    params:
+      repository: updated-result
